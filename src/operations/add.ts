@@ -18,7 +18,7 @@ import {
   type Unnamed,
 } from "../_pattern.ts";
 import { getParamRegexp, linearRegExp } from "../_segment-regexp.ts";
-import { createRouter } from "../context.ts";
+import { createNode, createRouter } from "../context.ts";
 import { NullProtoObj } from "../object.ts";
 import type { Node, RouterContext, ParamsIndexMap } from "../types.ts";
 
@@ -223,7 +223,7 @@ function _insert<T>(
       }
       trail?.push(node);
       if (!node.wildcard) {
-        node.wildcard = { key: "**" };
+        node.wildcard = createNode("**");
       }
       node = node.wildcard;
       // A `*` takes one segment or more (or, last, none: see `matchesZero`),
@@ -268,7 +268,7 @@ function _insert<T>(
       } else {
         trail?.push(node);
         if (!node.param) {
-          node.param = { key: "*" };
+          node.param = createNode("*");
         }
         node = node.param;
       }
@@ -320,7 +320,7 @@ function _insert<T>(
     if (child) {
       node = child;
     } else {
-      const staticNode = { key: segment };
+      const staticNode = createNode(segment);
       if (!node.static) {
         node.static = new NullProtoObj();
       }
@@ -333,13 +333,13 @@ function _insert<T>(
     for (const n of trail!) {
       n.hasSuffix = true;
     }
-    node = node.suffix ??= { key: "" };
+    node = node.suffix ??= createNode("");
     for (let j = suffix.length - 1; j >= 0; j--) {
       const edge = suffix[j];
       if (edge === 1) {
-        node = node.param ??= { key: "*" };
+        node = node.param ??= createNode("*");
       } else {
-        node = (node.static ??= new NullProtoObj())[edge] ??= { key: edge };
+        node = (node.static ??= new NullProtoObj())[edge] ??= createNode(edge);
       }
     }
   }

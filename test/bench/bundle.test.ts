@@ -248,8 +248,8 @@ describe("benchmark", () => {
     // +0B raw / +12B gzip: `src/` regrouped by concept (`_pattern.ts`,
     // `_match.ts`, `_segment-regexp.ts`); the same code in another module
     // order.
-    expect(bytes).toBeLessThanOrEqual(15099); // <15.10kb
-    expect(gzipSize).toBeLessThanOrEqual(6501); // <6.51kb
+    expect(bytes).toBeLessThanOrEqual(15110); // <15.10kb
+    expect(gzipSize).toBeLessThanOrEqual(6515); // <6.51kb
   });
 
   it("unused exports of the single-file build leave no code behind", async () => {
